@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ccf34686391c4909bcd1b0ab33eb36da" Name="Diagram1">
+        <EntityTypeShape EntityType="GigRateDataModel.Act" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GigRateDataModel.Event" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GigRateDataModel.EventAttendance" Width="1.5" PointX="7.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="GigRateDataModel.EventInstance" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="GigRateDataModel.EventInstanceStage" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="GigRateDataModel.Genre" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="GigRateDataModel.Performance" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GigRateDataModel.PerformanceRating" Width="1.5" PointX="7.5" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GigRateDataModel.Stage" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="GigRateDataModel.FK_Act_Genre" ManuallyRouted="false" />
+        <AssociationConnector Association="GigRateDataModel.FK_Performance_Act" ManuallyRouted="false" />
+        <AssociationConnector Association="GigRateDataModel.FK_EventInstance_Event" ManuallyRouted="false" />
+        <AssociationConnector Association="GigRateDataModel.FK_EventInstanceStages_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="GigRateDataModel.FK_Performance_EventInstanceStage" ManuallyRouted="false" />
+        <AssociationConnector Association="GigRateDataModel.FK_PerformanceRating_Performance" ManuallyRouted="false" />
+        <AssociationConnector Association="GigRateDataModel.FK_EventInstanceStages_EventInstance" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,50 @@
+﻿@model GigRate.Models.Performance
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Performance</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeOff)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeOff)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Act.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Act.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventInstanceStage.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventInstanceStage.Id)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

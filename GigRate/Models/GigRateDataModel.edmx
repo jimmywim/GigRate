@@ -1,0 +1,532 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GigRateDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Act">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="GenreId" Type="int" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="EventAttendance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventInstance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="255" />
+          <Property Name="DateFrom" Type="date" />
+          <Property Name="DateTo" Type="date" />
+        </EntityType>
+        <EntityType Name="EventInstanceStages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StageId" Type="int" />
+          <Property Name="EventInstanceId" Type="int" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Performance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TimeOn" Type="datetime" />
+          <Property Name="TimeOff" Type="datetime" />
+          <Property Name="ActId" Type="int" />
+          <Property Name="EventInstanceStageId" Type="int" />
+        </EntityType>
+        <EntityType Name="PerformanceRating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="varchar" MaxLength="50" />
+          <Property Name="Rating" Type="tinyint" />
+          <Property Name="Comments" Type="text" />
+          <Property Name="IsPublic" Type="bit" />
+          <Property Name="PerformanceId" Type="int" />
+        </EntityType>
+        <EntityType Name="Stage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Act_Genre">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="GenreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventInstance_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="EventInstance" Type="Self.EventInstance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventInstance">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventInstanceStages_EventInstance">
+          <End Role="EventInstance" Type="Self.EventInstance" Multiplicity="0..1" />
+          <End Role="EventInstanceStages" Type="Self.EventInstanceStages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventInstance">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventInstanceStages">
+              <PropertyRef Name="EventInstanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventInstanceStages_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="0..1" />
+          <End Role="EventInstanceStages" Type="Self.EventInstanceStages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventInstanceStages">
+              <PropertyRef Name="StageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Performance_Act">
+          <End Role="Act" Type="Self.Act" Multiplicity="0..1" />
+          <End Role="Performance" Type="Self.Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Act">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Performance">
+              <PropertyRef Name="ActId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Performance_EventInstanceStage">
+          <End Role="EventInstanceStages" Type="Self.EventInstanceStages" Multiplicity="0..1" />
+          <End Role="Performance" Type="Self.Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventInstanceStages">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Performance">
+              <PropertyRef Name="EventInstanceStageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerformanceRating_Performance">
+          <End Role="Performance" Type="Self.Performance" Multiplicity="0..1" />
+          <End Role="PerformanceRating" Type="Self.PerformanceRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Performance">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PerformanceRating">
+              <PropertyRef Name="PerformanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GigRateDataModelStoreContainer">
+          <EntitySet Name="Act" EntityType="Self.Act" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventAttendance" EntityType="Self.EventAttendance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventInstance" EntityType="Self.EventInstance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventInstanceStages" EntityType="Self.EventInstanceStages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Performance" EntityType="Self.Performance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PerformanceRating" EntityType="Self.PerformanceRating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stage" EntityType="Self.Stage" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Act_Genre" Association="Self.FK_Act_Genre">
+            <End Role="Genre" EntitySet="Genre" />
+            <End Role="Act" EntitySet="Act" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventInstance_Event" Association="Self.FK_EventInstance_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventInstance" EntitySet="EventInstance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventInstanceStages_EventInstance" Association="Self.FK_EventInstanceStages_EventInstance">
+            <End Role="EventInstance" EntitySet="EventInstance" />
+            <End Role="EventInstanceStages" EntitySet="EventInstanceStages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventInstanceStages_Stage" Association="Self.FK_EventInstanceStages_Stage">
+            <End Role="Stage" EntitySet="Stage" />
+            <End Role="EventInstanceStages" EntitySet="EventInstanceStages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Performance_Act" Association="Self.FK_Performance_Act">
+            <End Role="Act" EntitySet="Act" />
+            <End Role="Performance" EntitySet="Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Performance_EventInstanceStage" Association="Self.FK_Performance_EventInstanceStage">
+            <End Role="EventInstanceStages" EntitySet="EventInstanceStages" />
+            <End Role="Performance" EntitySet="Performance" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerformanceRating_Performance" Association="Self.FK_PerformanceRating_Performance">
+            <End Role="Performance" EntitySet="Performance" />
+            <End Role="PerformanceRating" EntitySet="PerformanceRating" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GigRateDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Act">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GenreId" Type="Int32" />
+          <NavigationProperty Name="Genre" Relationship="Self.FK_Act_Genre" FromRole="Act" ToRole="Genre" />
+          <NavigationProperty Name="Performances" Relationship="Self.FK_Performance_Act" FromRole="Act" ToRole="Performance" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="EventInstances" Relationship="Self.FK_EventInstance_Event" FromRole="Event" ToRole="EventInstance" />
+        </EntityType>
+        <EntityType Name="EventAttendance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventInstance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventId" Type="Int32" />
+          <Property Name="DateFrom" Type="DateTime" Precision="0" />
+          <Property Name="DateTo" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_EventInstance_Event" FromRole="EventInstance" ToRole="Event" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventInstanceStages" Relationship="GigRateDataModel.FK_EventInstanceStages_EventInstance" FromRole="EventInstance" ToRole="EventInstanceStage" />
+        </EntityType>
+        <EntityType Name="EventInstanceStage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StageId" Type="Int32" />
+          <NavigationProperty Name="Stage" Relationship="Self.FK_EventInstanceStages_Stage" FromRole="EventInstanceStages" ToRole="Stage" />
+          <NavigationProperty Name="Performances" Relationship="Self.FK_Performance_EventInstanceStage" FromRole="EventInstanceStages" ToRole="Performance" />
+          <Property Name="EventInstanceId" Type="Int32" />
+          <NavigationProperty Name="EventInstance" Relationship="GigRateDataModel.FK_EventInstanceStages_EventInstance" FromRole="EventInstanceStage" ToRole="EventInstance" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Acts" Relationship="Self.FK_Act_Genre" FromRole="Genre" ToRole="Act" />
+        </EntityType>
+        <EntityType Name="Performance">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimeOn" Type="DateTime" Precision="3" />
+          <Property Name="TimeOff" Type="DateTime" Precision="3" />
+          <Property Name="ActId" Type="Int32" />
+          <Property Name="EventInstanceStageId" Type="Int32" />
+          <NavigationProperty Name="Act" Relationship="Self.FK_Performance_Act" FromRole="Performance" ToRole="Act" />
+          <NavigationProperty Name="EventInstanceStage" Relationship="Self.FK_Performance_EventInstanceStage" FromRole="Performance" ToRole="EventInstanceStages" />
+          <NavigationProperty Name="PerformanceRatings" Relationship="Self.FK_PerformanceRating_Performance" FromRole="Performance" ToRole="PerformanceRating" />
+        </EntityType>
+        <EntityType Name="PerformanceRating">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Rating" Type="Byte" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsPublic" Type="Boolean" />
+          <Property Name="PerformanceId" Type="Int32" />
+          <NavigationProperty Name="Performance" Relationship="Self.FK_PerformanceRating_Performance" FromRole="PerformanceRating" ToRole="Performance" />
+        </EntityType>
+        <EntityType Name="Stage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventInstanceStages" Relationship="Self.FK_EventInstanceStages_Stage" FromRole="Stage" ToRole="EventInstanceStages" />
+        </EntityType>
+        <Association Name="FK_Act_Genre">
+          <End Role="Genre" Type="Self.Genre" Multiplicity="0..1" />
+          <End Role="Act" Type="Self.Act" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Genre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Act">
+              <PropertyRef Name="GenreId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Performance_Act">
+          <End Role="Act" Type="Self.Act" Multiplicity="0..1" />
+          <End Role="Performance" Type="Self.Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Act">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Performance">
+              <PropertyRef Name="ActId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventInstance_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="EventInstance" Type="Self.EventInstance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventInstance">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventInstanceStages_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="0..1" />
+          <End Role="EventInstanceStages" Type="Self.EventInstanceStage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventInstanceStages">
+              <PropertyRef Name="StageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Performance_EventInstanceStage">
+          <End Role="EventInstanceStages" Type="Self.EventInstanceStage" Multiplicity="0..1" />
+          <End Role="Performance" Type="Self.Performance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventInstanceStages">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Performance">
+              <PropertyRef Name="EventInstanceStageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PerformanceRating_Performance">
+          <End Role="Performance" Type="Self.Performance" Multiplicity="0..1" />
+          <End Role="PerformanceRating" Type="Self.PerformanceRating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Performance">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PerformanceRating">
+              <PropertyRef Name="PerformanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GigRateDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Acts" EntityType="Self.Act" />
+          <EntitySet Name="Events" EntityType="Self.Event" />
+          <EntitySet Name="EventAttendances" EntityType="Self.EventAttendance" />
+          <EntitySet Name="EventInstances" EntityType="Self.EventInstance" />
+          <EntitySet Name="EventInstanceStages" EntityType="Self.EventInstanceStage" />
+          <EntitySet Name="Genres" EntityType="Self.Genre" />
+          <EntitySet Name="Performances" EntityType="Self.Performance" />
+          <EntitySet Name="PerformanceRatings" EntityType="Self.PerformanceRating" />
+          <EntitySet Name="Stages" EntityType="Self.Stage" />
+          <AssociationSet Name="FK_Act_Genre" Association="Self.FK_Act_Genre">
+            <End Role="Genre" EntitySet="Genres" />
+            <End Role="Act" EntitySet="Acts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Performance_Act" Association="Self.FK_Performance_Act">
+            <End Role="Act" EntitySet="Acts" />
+            <End Role="Performance" EntitySet="Performances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventInstance_Event" Association="Self.FK_EventInstance_Event">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="EventInstance" EntitySet="EventInstances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventInstanceStages_Stage" Association="Self.FK_EventInstanceStages_Stage">
+            <End Role="Stage" EntitySet="Stages" />
+            <End Role="EventInstanceStages" EntitySet="EventInstanceStages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Performance_EventInstanceStage" Association="Self.FK_Performance_EventInstanceStage">
+            <End Role="EventInstanceStages" EntitySet="EventInstanceStages" />
+            <End Role="Performance" EntitySet="Performances" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PerformanceRating_Performance" Association="Self.FK_PerformanceRating_Performance">
+            <End Role="Performance" EntitySet="Performances" />
+            <End Role="PerformanceRating" EntitySet="PerformanceRatings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventInstanceStages_EventInstance" Association="GigRateDataModel.FK_EventInstanceStages_EventInstance">
+            <End Role="EventInstance" EntitySet="EventInstances" />
+            <End Role="EventInstanceStage" EntitySet="EventInstanceStages" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_EventInstanceStages_EventInstance">
+          <End Type="GigRateDataModel.EventInstance" Role="EventInstance" Multiplicity="0..1" />
+          <End Type="GigRateDataModel.EventInstanceStage" Role="EventInstanceStage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventInstance">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventInstanceStage">
+              <PropertyRef Name="EventInstanceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GigRateDataModelStoreContainer" CdmEntityContainer="GigRateDataEntities">
+          <EntitySetMapping Name="Acts">
+            <EntityTypeMapping TypeName="GigRateDataModel.Act">
+              <MappingFragment StoreEntitySet="Act">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="GigRateDataModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventAttendances">
+            <EntityTypeMapping TypeName="GigRateDataModel.EventAttendance">
+              <MappingFragment StoreEntitySet="EventAttendance">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventInstances">
+            <EntityTypeMapping TypeName="GigRateDataModel.EventInstance">
+              <MappingFragment StoreEntitySet="EventInstance">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="DateFrom" ColumnName="DateFrom" />
+                <ScalarProperty Name="DateTo" ColumnName="DateTo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventInstanceStages">
+            <EntityTypeMapping TypeName="GigRateDataModel.EventInstanceStage">
+              <MappingFragment StoreEntitySet="EventInstanceStages">
+                <ScalarProperty Name="EventInstanceId" ColumnName="EventInstanceId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StageId" ColumnName="StageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="GigRateDataModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Performances">
+            <EntityTypeMapping TypeName="GigRateDataModel.Performance">
+              <MappingFragment StoreEntitySet="Performance">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TimeOn" ColumnName="TimeOn" />
+                <ScalarProperty Name="TimeOff" ColumnName="TimeOff" />
+                <ScalarProperty Name="ActId" ColumnName="ActId" />
+                <ScalarProperty Name="EventInstanceStageId" ColumnName="EventInstanceStageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PerformanceRatings">
+            <EntityTypeMapping TypeName="GigRateDataModel.PerformanceRating">
+              <MappingFragment StoreEntitySet="PerformanceRating">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
+                <ScalarProperty Name="PerformanceId" ColumnName="PerformanceId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stages">
+            <EntityTypeMapping TypeName="GigRateDataModel.Stage">
+              <MappingFragment StoreEntitySet="Stage">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
